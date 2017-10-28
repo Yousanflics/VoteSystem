@@ -16,6 +16,7 @@ text-align: center;x
 *{font-family: "微软雅黑";}
 		</style>
 		<script>
+			<!-- 投票删除接口 -->
 function doDel(id) {
 	if (confirm("确定要删除吗？")) {
 		window.location='action.php?action=del&id=' + id;

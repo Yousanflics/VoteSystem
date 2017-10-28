@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="">
+
+	<head>
+		<meta charset="utf-8">
+		<meta content="IE=edge" http-equiv="X-UA-Compatible">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>
+			投票身份验证
+		</title>
+		<!-- Bootstrap CSS -->
+		<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" rel="stylesheet">
+		</link>
+		</meta>
+		</meta>
+		</meta>
+	</head>
+
+	<body>
+		<div class="container" style="margin-top:30px;">
+			<div class="page-header text-center">
+				<h4>投票身份验证</h4>
+			</div>
+			<div class="form-group">
+				<label for="">学号：</label>
+				<input type="text" class="form-control" id="stu_num" placeholder="请输入你的学号" onkeyup="this.value=this.value.replace(/\D/g,'')">
+			</div>
+			<div class="form-group">
+				<label for="">姓名：</label>
+				<input type="text" class="form-control" id="stu_name" placeholder="请输入你的姓名">
+			</div>
+
+			<input id="submitvote" type="submit" name="stu_class" value="确认验证，开始投票" type="submit" class="btn btn-success" style="width: 100%;">
+			<div class="text-center" style="margin-top: 20px;">
+				CopyRight @ 2010-2017 点石社团程序组版权所有
+			</div>
+		</div>
+
+		<!-- jQuery -->
+		<script src="//code.jquery.com/jquery.js">
+		</script>
+		<!-- Bootstrap JavaScript -->
+		<script crossorigin="anonymous" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
+		</script>
+		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+		<script type="text/javascript">
+		
+			
+			document.getElementById("submitvote").onclick = function() {
+				if (check()) {
+					var request = new XMLHttpRequest();
+					request.open("POST", "action.php?action=confirmIdentify");
+					var data = "stu_num=" + document.getElementById("stu_num").value + "&stu_name=" + document.getElementById("stu_name").value ;
+					request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+					request.send(data);
+					request.onreadystatechange = function() {
+
+						if (request.readyState === 4) {
+							if (request.status === 200) {
+								var JsonData = JSON.parse(request.responseText);
+								if(JsonData['code']==1){
+									alert(JsonData['msg']);
+									window.location.href = 'index.php?stu_num='+JsonData['stu_num'];
+								}
+								if(JsonData['code']==-1){
+									alert(JsonData['msg']);
+								}
+								if(JsonData['code']==0){
+									alert(JsonData['msg']);
+								}
+							}
+							else {
+								alert("失败");
+							}
+						}
+					}
+				}
+			}
+			
+			
+			function check(){
+				var name=document.getElementById('stu_name').value;
+				var num=document.getElementById('stu_num').value;
+				if(name==''||num==''){
+					alert("信息填写不完整，还想验证？");
+					return false;
+				}
+				return true;
+			}
+		</script>
+	</body>
+
+</html>
